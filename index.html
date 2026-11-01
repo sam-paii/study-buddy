@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Study Planner</title>
+<style>
+:root{--bg:#f4f1ea;--card:#fff;--text:#222a35;--muted:#667085;--accent:#3b5bdb;--accent-t:#fff;--line:#e0dccf;--bad:#c0392b;--ok:#2f8f55;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15181e;--card:#1f242c;--text:#e8ecf2;--muted:#9aa4b2;--accent:#7c9cff;--accent-t:#0e1424;--line:#343b47;--bad:#ef7d6f;--ok:#4cbf7d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15181e;--card:#1f242c;--text:#e8ecf2;--muted:#9aa4b2;--accent:#7c9cff;--accent-t:#0e1424;--line:#343b47;--bad:#ef7d6f;--ok:#4cbf7d;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}
+main{max-width:720px;margin:0 auto;padding:16px 14px 60px}
+h1{font-size:1.5rem;margin:4px 0 2px}h2{font-size:1.1rem;margin:20px 0 8px}
+.muted{color:var(--muted);font-size:.9rem}
+nav{display:flex;gap:6px;overflow-x:auto;margin:12px 0}
+nav button{white-space:nowrap}
+button,.btn{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);padding:8px 12px}
+button.on,button.primary{background:var(--accent);color:var(--accent-t);border-color:var(--accent);font-weight:600}
+button.link{border:0;background:none;color:var(--bad);padding:4px 6px;font-size:.85rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0;border-left-width:5px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sp{flex:1}
+input,select,textarea{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px;min-width:0}
+form{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+form input[type=text]{flex:1 1 160px}
+.pill{font-size:.78rem;padding:2px 8px;border-radius:99px;color:#fff;white-space:nowrap}
+.when{font-size:.85rem;font-weight:600}
+.late{color:var(--bad)}.soon{color:var(--accent)}
+.files a{display:inline-block;margin:4px 8px 0 0;font-size:.9rem;color:var(--accent)}
+.done .t{text-decoration:line-through;color:var(--muted)}
+.banner{background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:8px 12px;font-size:.88rem;margin:8px 0}
+:root[data-theme="ocean"]{--bg:#e7f2f8;--card:#fff;--text:#10303f;--muted:#587889;--accent:#0a84c6;--accent-t:#fff;--line:#c6dde8;--bad:#c0392b;--ok:#1f9d6b;color-scheme:light}
+:root[data-theme="sunset"]{--bg:#fff4e8;--card:#fffdf9;--text:#3a2418;--muted:#8a6a58;--accent:#e8590c;--accent-t:#fff;--line:#f1d9c2;--bad:#c0392b;--ok:#2f8f55;color-scheme:light}
+:root[data-theme="forest"]{--bg:#10201a;--card:#182b23;--text:#e6f3ea;--muted:#8fb09e;--accent:#5fd08a;--accent-t:#08170f;--line:#2a4538;--bad:#ef7d6f;--ok:#5fd08a;color-scheme:dark}
+:root[data-theme="midnight"]{--bg:#0f1020;--card:#191a33;--text:#ecebff;--muted:#9a9bc4;--accent:#9b8cff;--accent-t:#120f2a;--line:#2c2e52;--bad:#ff8a7a;--ok:#5fd7a0;color-scheme:dark}
+body{font-size:var(--fs,16px)}main{padding-bottom:100px}
+.card,.w,.hero,.banner{border-radius:var(--r,14px)}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:5;margin:0;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);justify-content:flex-start;gap:2px}
+nav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;font-size:.7rem;padding:4px 10px;gap:2px;color:var(--muted);flex:0 0 auto}
+nav button i{font-style:normal;font-size:1.3rem}nav button.on{background:none;color:var(--accent)}
+@media(min-width:900px){nav{top:0;right:auto;bottom:auto;width:200px;flex-direction:column;border-top:0;border-right:1px solid var(--line);padding:70px 10px 10px;overflow:auto;gap:4px}nav button{flex-direction:row;font-size:.95rem;width:100%;justify-content:flex-start;gap:10px;padding:10px;border-radius:10px}nav button.on{background:var(--accent);color:var(--accent-t)}main{margin-left:220px;max-width:900px;padding-bottom:30px}}
+.hero{background:var(--accent);color:var(--accent-t);padding:18px}.hero h2{margin:0 0 4px;font-size:1.4rem}
+.wg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:10px}
+.w{background:var(--card);border:1px solid var(--line);padding:14px}.w.wide{grid-column:1/-1}.w small{color:var(--muted);display:block}.w .n{font-size:1.9rem;font-weight:700;line-height:1.1;color:var(--accent);margin:4px 0}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;margin-top:8px}.week div{background:var(--bg);border-radius:8px;padding:6px 2px}.week b{display:block;font-size:1rem}
+.sw{width:34px;height:34px;border-radius:50%;padding:0;border:3px solid var(--line)}.sw.on{border-color:var(--text)}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin:6px 0}.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}button.bad{background:var(--bad);color:#fff;border-color:var(--bad)}
+details summary{cursor:pointer}
+#auth{position:fixed;inset:0;z-index:20;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px}.authbox{width:100%;max-width:340px;text-align:center;display:flex;flex-direction:column;gap:10px}#auth.hide{display:none}
+</style>
+</head>
+<body>
+<div id="auth"><div class="authbox"><div style="font-size:2.4rem">📚</div><h1>Study Planner</h1><p class="muted">Log in or create an account</p><input id="au" placeholder="Username" autocomplete="username"><input id="ap" type="password" placeholder="Password (4+ characters)" autocomplete="current-password"><button class="primary" id="al">Log in</button><button id="ar">Create account</button><div id="am" class="muted"></div></div></div>
+<main>
+<h1>📚 Study Planner</h1>
+<div id="status" class="muted">Loading…</div>
+<nav id="nav"></nav>
+<div id="app"></div>
+</main>
+<script>
+var S={subjects:[],tests:[],hw:[],files:[],notes:[],grades:[],sess:{},set:{},quick:"",g:{},cards:[],loot:[]},tab="home",db=null,assets=null,user=null,ref=null,me=null,timer=null,busy="";
+var TABS=[["home","🏠 Home"],["plan","📅 Planner"],["subjects","🎓 Subjects"],["tests","📝 Tests"],["hw","📖 Homework"],["notes","🗒 Notes"],["grades","📊 Grades"],["focus","⏱ Focus"],["games","🎮 Games"],["cards","🃏 Cards"],["rew","🏆 Rewards"],["acct","👤 Account"],["set","⚙️ Settings"]];
+var app=document.getElementById("app"),stat=document.getElementById("status");
+function uid(){return Math.random().toString(36).slice(2,10)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function iso(d){var m=d.getMonth()+1,x=d.getDate();return d.getFullYear()+"-"+(m<10?"0":"")+m+"-"+(x<10?"0":"")+x}
+function daysTo(d){return Math.round((new Date(d+"T00:00")-new Date(iso(new Date())+"T00:00"))/864e5)}
+function when(d){var n=daysTo(d),t=new Date(d+"T00:00").toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
+var l=n<0?Math.abs(n)+" day"+(n==-1?"":"s")+" ago":n==0?"Today":n==1?"Tomorrow":"in "+n+" days";
+return '<span class="when '+(n<0?"late":n<=3?"soon":"")+'">'+t+" · "+l+"</span>"}
+function sub(id){return S.subjects.find(function(s){return s.id===id})}
+function pill(id){var s=sub(id);return s?'<span class="pill" style="background:'+esc(s.color)+'">'+esc(s.name)+"</span>":'<span class="muted">No subject</span>'}
+function opts(sel){return '<option value="">No subject</option>'+S.subjects.map(function(s){return '<option value="'+s.id+'"'+(s.id===sel?" selected":"")+">"+esc(s.name)+"</option>"}).join("")}
+function save(){if(!cur)return;clearTimeout(timer);stat.textContent="Saving…";timer=setTimeout(function(){try{localStorage.setItem("sp_data_"+cur,JSON.stringify(S));stat.textContent="✓ Saved on this device"}catch(e){stat.textContent="⚠ Could not save (storage may be full)"}},400)}
+function fileBlock(kind,r){var fl=S.files.filter(function(f){return f.kind===kind&&f.ref===r});
+var h='<div class="files">'+fl.map(function(f){return '<a href="#" data-blob="'+f.aid+'">📎 '+esc(f.name)+'</a><button class="link" data-act="delfile" data-id="'+f.id+'">remove</button>'}).join("")+"</div>";
+if(assets)h+='<label class="btn" style="display:inline-block;margin-top:8px;font-size:.85rem">＋ Attach file<input type="file" multiple hidden data-up="'+kind+":"+r+'"></label>';
+return h}
+function testCard(t){return '<div class="card" style="border-left-color:'+((sub(t.sub)||{}).color||"var(--line)")+'"><div class="row"><b>'+esc(t.title)+'</b>'+pill(t.sub)+'<span class="sp"></span>'+when(t.date)+'<button class="link" data-act="deltest" data-id="'+t.id+'">delete</button></div>'+(t.notes?'<div class="muted">'+esc(t.notes)+"</div>":"")+fileBlock("test",t.id)+"</div>"}
+function hwCard(h){return '<div class="card'+(h.done?" done":"")+'" style="border-left-color:'+((sub(h.sub)||{}).color||"var(--line)")+'"><div class="row"><input type="checkbox" data-act="tog" data-id="'+h.id+'"'+(h.done?" checked":"")+'><b class="t">'+esc(h.title)+'</b>'+pill(h.sub)+'<span class="sp"></span>'+when(h.date)+'<button class="link" data-act="delhw" data-id="'+h.id+'">delete</button></div>'+fileBlock("hw",h.id)+"</div>"}
+function view(){
+if(tab==="home"){var nm=S.set.name||(me&&me.name)||"there",hr=new Date().getHours(),nt=S.tests.filter(t=>daysTo(t.date)>=0).sort((a,b)=>a.date<b.date?-1:1)[0],due=S.hw.filter(h=>!h.done&&daysTo(h.date)<=0).length,todo=S.hw.filter(h=>!h.done).length,sc=0,ot=0,wk="",TP=["Study in short bursts, then take a 5 minute break.","Test yourself instead of rereading.","Explain it out loud as if you were teaching a friend.","Sleep helps your brain store what you learned.","Start with the hardest subject while you are fresh."];
+S.grades.forEach(g=>{sc+=g.score;ot+=g.out});
+for(var i=0;i<7;i++){var d=new Date();d.setDate(d.getDate()+i);var k=iso(d),c=S.tests.filter(t=>t.date===k).length+S.hw.filter(x=>!x.done&&x.date===k).length;wk+='<div><small>'+d.toLocaleDateString(undefined,{weekday:"short"})+'</small><b>'+d.getDate()+'</b>'+(c?'<span class="pill" style="background:var(--accent)">'+c+'</span>':"·")+'</div>'}
+var w=(k,h)=>wOn(k)?h:"";
+return '<div class="hero"><h2>'+(hr<12?"Good morning":hr<18?"Good afternoon":"Good evening")+", "+esc(nm)+' 👋</h2><div style="opacity:.85">'+new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"})+'</div></div><div class="wg">'
++w("next",'<div class="w"><small>Next test</small><div class="n">'+(nt?(daysTo(nt.date)==0?"Today":daysTo(nt.date)+"d"):"–")+'</div><small>'+(nt?esc(nt.title):"None planned")+'</small></div>')
++w("due",'<div class="w"><small>Homework due</small><div class="n">'+due+'</div><small>'+todo+' to do in total</small></div>')
++w("focus",'<div class="w"><small>Focus today</small><div class="n">'+((S.sess||{})[iso(new Date())]||0)+'</div><small>sessions</small></div>')
++w("level",'<div class="w"><small>Level</small><div class="n">'+lv()[0]+'</div><div class="bar"><i style="width:'+lv()[1]+'%"></i></div><small>'+((S.g||{}).coins||0)+' 🪙 · '+((S.g||{}).streak||0)+'🔥 streak</small></div>')
++w("avg",'<div class="w"><small>Average grade</small><div class="n">'+(ot?Math.round(sc/ot*100)+"%":"–")+'</div><small>'+S.grades.length+' results</small></div>')
++w("week",'<div class="w wide"><small>This week</small><div class="week">'+wk+'</div></div>')
++w("quick",'<div class="w wide"><small>Quick note</small><textarea data-quick="" rows="3" style="width:100%;margin-top:6px" placeholder="Jot something down…">'+esc(S.quick)+'</textarea></div>')
++w("tip",'<div class="w wide"><small>💡 Study tip</small>'+TP[new Date().getDate()%TP.length]+'</div>')
++'</div><div class="muted" style="margin-top:12px">Customise this page in ⚙️ Settings.</div>'}
+if(tab==="set"){var st=S.set,TH=[["auto","Auto"],["light","Light"],["dark","Dark"],["ocean","Ocean"],["sunset","Sunset"],["forest","Forest"],["midnight","Midnight"]],AC=["#3b5bdb","#e8590c","#2f9e44","#d6336c","#7048e8","#0c8599","#f08c00"],WL=[["next","Next test"],["due","Homework due"],["focus","Focus sessions"],["avg","Average grade"],["week","Week view"],["quick","Quick note"],["tip","Study tip"],["level","Level and streak"]];
+return '<h2>Settings</h2><div class="card"><b>Your name</b><div class="row" style="margin-top:8px"><input type="text" data-set="name" value="'+esc(st.name||"")+'" placeholder="Shown on Home"></div></div>'
++'<div class="card"><b>Theme</b><div class="row" style="margin-top:8px">'+TH.map(t=>'<button data-act="theme" data-id="'+t[0]+'"'+((st.theme||"auto")===t[0]?' class="on"':"")+'>'+t[1]+'</button>').join("")+'</div></div>'
++'<div class="card"><b>Accent colour</b><div class="row" style="margin-top:8px"><button class="sw" data-act="acc" data-id="" title="Theme default" style="background:var(--line)"></button>'+AC.map(c=>'<button class="sw'+(st.acc===c?" on":"")+'" data-act="acc" data-id="'+c+'" style="background:'+c+'"></button>').join("")+'</div></div>'
++'<div class="card"><b>Style</b><div class="row" style="margin-top:8px"><button data-act="rad" data-id="4">Square</button><button data-act="rad" data-id="14">Rounded</button><button data-act="rad" data-id="24">Extra round</button><button data-act="fs" data-id="14">Compact</button><button data-act="fs" data-id="16">Normal</button><button data-act="fs" data-id="18">Large text</button></div></div>'
++'<div class="card"><b>Home widgets</b>'+WL.map(x=>'<div class="row" style="margin-top:8px"><input type="checkbox" data-act="wtog" data-id="'+x[0]+'"'+(wOn(x[0])?" checked":"")+'><span>'+x[1]+'</span></div>').join("")+'</div>'}
+if(tab==="cards"){return '<h2>Flashcards</h2><form data-form="card"><input type="text" name="q" placeholder="Question" required><input type="text" name="a" placeholder="Answer" required><select name="sub">'+opts("")+'</select><button class="primary">Add card</button></form>'+(S.cards.length<4?'<div class="banner">Add at least 4 cards to play Quiz Arena. <button data-act="starter">Add Earth Science starter pack</button></div>':"")+S.cards.map(c=>'<div class="card"><details><summary><b>'+esc(c.q)+'</b> '+pill(c.sub)+'</summary><p>'+esc(c.a)+'</p></details><button class="link" data-act="delcard" data-id="'+c.id+'">delete</button></div>').join("")}
+if(tab==="games"){
+if(gm&&gm.i<gm.q.length){var q=gm.q[gm.i];return '<h2>Quiz Arena</h2><div class="muted">Question '+(gm.i+1)+' of '+gm.q.length+' · Score '+gm.sc+'</div><div class="bar"><i style="width:'+(gm.i/gm.q.length*100)+'%"></i></div><div class="card"><b>'+esc(q.c.q)+'</b>'+q.o.map((o,n)=>'<button style="display:block;width:100%;text-align:left;margin-top:8px" class="'+(gm.p==null?"":o===q.c.a?"ok":n===gm.p?"bad":"")+'" '+(gm.p==null?'data-act="qa" data-id="'+n+'"':"disabled")+'>'+esc(o)+'</button>').join("")+(gm.p!=null?'<div style="margin-top:10px"><b>'+(q.o[gm.p]===q.c.a?"✅ Correct! +10 XP, +3 🪙":"❌ Answer: "+esc(q.c.a))+'</b></div><button class="primary" style="margin-top:8px" data-act="qn">'+(gm.i+1>=gm.q.length?"Finish":"Next")+'</button>':"")+'</div>'}
+if(gm){var pf=gm.sc===gm.q.length,xp=gm.sc*10+(pf?20:0);return '<h2>Results</h2><div class="hero"><h2>'+gm.sc+' / '+gm.q.length+(pf?" 💯 Perfect!":"")+'</h2><div>You earned '+xp+' XP'+(pf?" including the perfect bonus":"")+'.</div></div><button class="primary" style="margin-top:12px" data-act="qx">Back to games</button>'}
+return '<h2>Games</h2><div class="hero"><h2>Quiz Arena 🎯</h2><div>Answer questions from your flashcards. Every correct answer earns XP and coins!</div></div><div class="card"><div class="row"><select id="qsub"><option value="">All subjects</option>'+S.subjects.map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join("")+'</select><button class="primary" data-act="qs">Start 10-question quiz</button></div><div class="muted" style="margin-top:6px">'+S.cards.length+' flashcards ready · Level '+lv()[0]+' · '+((S.g||{}).coins||0)+' 🪙</div></div>'+(S.cards.length<4?'<div class="banner">Add at least 4 flashcards in the 🃏 Cards tab first. There is a starter pack there.</div>':"")}
+if(tab==="rew"){var g=S.g||{},L=lv(),cnt={},nS=0;S.loot.forEach(x=>cnt[x]=(cnt[x]||0)+1);Object.keys(S.sess||{}).forEach(k=>nS+=S.sess[k]);
+var B=[["🥇","First quiz",(g.played||0)>=1],["🧠","25 correct answers",(g.correct||0)>=25],["💯","Perfect quiz",(g.perfect||0)>=1],["🔥","3-day streak",(g.streak||0)>=3],["⭐","Level 5",L[0]>=5],["📚","10 homework done",S.hw.filter(h=>h.done).length>=10],["⏱","5 focus sessions",nS>=5],["🎁","Collector (5 items)",S.loot.length>=5]];
+return '<h2>Rewards</h2><div class="hero"><h2>Level '+L[0]+'</h2><div class="bar" style="background:rgba(255,255,255,.3)"><i style="background:#fff;width:'+L[1]+'%"></i></div><div>'+L[1]+'/100 XP · '+(g.coins||0)+' 🪙 · '+(g.streak||0)+'🔥 day streak</div></div><h2>Loot box</h2><div class="card">Spend 50 🪙 to win a random collectible.<div><button class="primary" style="margin-top:8px" data-act="loot">🎁 Open loot box (50 🪙)</button></div>'+(lastLoot?'<div style="margin-top:8px">You got <b style="font-size:1.6rem">'+lastLoot+'</b>!</div>':"")+'<div style="font-size:2rem;margin-top:8px">'+(Object.keys(cnt).map(k=>k+(cnt[k]>1?'<sup style="font-size:.7rem">×'+cnt[k]+'</sup>':"")).join(" ")||'<span class="muted" style="font-size:.9rem">Nothing collected yet</span>')+'</div></div><h2>Badges</h2><div class="wg">'+B.map(b=>'<div class="w" style="text-align:center;opacity:'+(b[2]?1:.4)+'"><div style="font-size:1.8rem">'+b[0]+'</div><small>'+b[1]+'</small></div>').join("")+'</div><div class="muted" style="margin-top:10px">Earn XP and coins from quizzes (+10 per correct answer), homework (+10), and focus sessions (+15).</div>'}
+if(tab==="plan"){var it=S.tests.map(function(t){return{d:t.date,h:'<div class="muted" style="margin-top:8px">TEST</div>'+testCard(t)}}).concat(S.hw.filter(function(h){return!h.done}).map(function(h){return{d:h.date,h:'<div class="muted" style="margin-top:8px">HOMEWORK</div>'+hwCard(h)}}))
+.filter(function(x){return daysTo(x.d)>=-7}).sort(function(a,b){return a.d<b.d?-1:1});
+return '<h2>Coming up</h2>'+(it.length?it.map(function(x){return x.h}).join(""):'<div class="banner">Nothing due. Add subjects, then tests and homework from the tabs above.</div>')}
+if(tab==="subjects"){return '<h2>Subjects</h2><form data-form="subject"><input type="text" name="name" placeholder="e.g. Science" required><input type="color" name="color" value="#3b5bdb"><button class="primary">Add subject</button></form>'+
+(S.subjects.length?S.subjects.map(function(s){var nt=S.tests.filter(function(t){return t.sub===s.id&&daysTo(t.date)>=0}).sort(function(a,b){return a.date<b.date?-1:1})[0],nh=S.hw.filter(function(h){return h.sub===s.id&&!h.done}).length;
+return '<div class="card" style="border-left-color:'+esc(s.color)+'"><div class="row"><b>'+esc(s.name)+'</b><span class="sp"></span><button class="link" data-act="delsub" data-id="'+s.id+'">delete</button></div><div class="muted">'+(nt?"Next test: "+esc(nt.title)+" ("+when(nt.date)+")":"No upcoming tests")+" · "+nh+" homework to do</div><b style=\"font-size:.85rem\">Subject files</b>"+fileBlock("subject",s.id)+"</div>"}).join(""):'<div class="banner">No subjects yet. Add your first one above.</div>')}
+if(tab==="tests"){var ts=S.tests.slice().sort(function(a,b){return a.date<b.date?-1:1});
+return '<h2>Tests</h2><form data-form="test"><input type="text" name="title" placeholder="Test name" required><select name="sub">'+opts("")+'</select><input type="date" name="date" required><input type="text" name="notes" placeholder="Topics or notes (optional)"><button class="primary">Add test</button></form>'+(ts.length?ts.map(testCard).join(""):'<div class="banner">No tests yet.</div>')}
+if(tab==="hw"){var hs=S.hw.slice().sort(function(a,b){return a.done-b.done||(a.date<b.date?-1:1)});
+return '<h2>Homework</h2><form data-form="hw"><input type="text" name="title" placeholder="Homework task" required><select name="sub">'+opts("")+'</select><input type="date" name="date" required><button class="primary">Add homework</button></form>'+(hs.length?hs.map(hwCard).join(""):'<div class="banner">No homework yet.</div>')}
+if(tab==="notes"){return '<h2>Notes</h2><form data-form="note"><input type="text" name="title" placeholder="Note title" required><select name="sub">'+opts("")+'</select><button class="primary">New note</button></form>'+(S.notes.length?S.notes.map(function(n){return '<div class="card" style="border-left-color:'+((sub(n.sub)||{}).color||"var(--line)")+'"><div class="row"><b>'+esc(n.title)+'</b>'+pill(n.sub)+'<span class="sp"></span><button class="link" data-act="delnote" data-id="'+n.id+'">delete</button></div><textarea data-note="'+n.id+'" rows="6" style="width:100%;margin-top:8px" placeholder="Type your notes here…">'+esc(n.text)+'</textarea>'+fileBlock("note",n.id)+'</div>'}).join(""):'<div class="banner">No notes yet. Make one note per topic.</div>')}
+if(tab==="grades"){var by={};S.grades.forEach(function(g){(by[g.sub]=by[g.sub]||[]).push(g)});return '<h2>Grades</h2><form data-form="grade"><input type="text" name="title" placeholder="Assessment" required><select name="sub">'+opts("")+'</select><input type="number" name="score" step="any" min="0" placeholder="Score" required style="width:90px"><input type="number" name="out" step="any" min="1" placeholder="Out of" required style="width:90px"><button class="primary">Add grade</button></form>'+(S.grades.length?Object.keys(by).map(function(k){var a=by[k],sc=0,ot=0;a.forEach(function(g){sc+=g.score;ot+=g.out});return '<div class="card" style="border-left-color:'+((sub(k)||{}).color||"var(--line)")+'"><div class="row">'+pill(k)+'<span class="sp"></span><b>Average '+Math.round(sc/ot*100)+'%</b></div>'+a.map(function(g){return '<div class="row muted" style="margin-top:6px"><span>'+esc(g.title)+'</span><span class="sp"></span><span>'+g.score+"/"+g.out+" ("+Math.round(g.score/g.out*100)+'%)</span><button class="link" data-act="delgrade" data-id="'+g.id+'">delete</button></div>'}).join("")+"</div>"}).join(""):'<div class="banner">No grades yet.</div>')}
+if(tab==="focus"){var td=(S.sess||{})[iso(new Date())]||0;return '<h2>Focus timer</h2><div class="card" style="text-align:center"><div id="clk" style="font-size:3rem;font-weight:700">'+ftxt()+'</div><div class="row" style="justify-content:center;margin:8px 0"><button class="primary" data-act="fstart">Start</button><button data-act="fpause">Pause</button><button data-act="freset">Reset</button></div><div class="row" style="justify-content:center"><button data-act="fset" data-id="15">15 min</button><button data-act="fset" data-id="25">25 min</button><button data-act="fset" data-id="45">45 min</button></div><p class="muted">Focus sessions done today: '+td+'</p></div>'}
+return '<h2>Account</h2><div class="card"><b>'+esc(cur||"")+'</b><div class="muted">'+"Your planner is saved on this device under this username."+'</div></div><div class="card"><b>Your data</b><div class="muted">'+S.subjects.length+" subjects · "+S.tests.length+" tests · "+S.hw.length+" homework · "+S.files.length+' files</div></div><div class="card"><button data-act="logout">Log out</button> <button class="link" data-act="delacct">Delete this account and its data</button></div><div class="banner">Accounts and data live only in this browser on this device. Use the same browser to log back in.</div>'}
+function render(){document.getElementById("nav").innerHTML=TABS.map(function(t){return '<button data-act="tab" data-id="'+t[0]+'"'+(t[0]===tab?' class="on"':"")+"><i>"+t[1].split(" ")[0]+"</i><span>"+t[1].split(" ").slice(1).join(" ")+"</span></button>"}).join("");app.innerHTML=view();applySet()}
+document.addEventListener("click",function(e){var b=e.target.closest("[data-act]");if(!b)return;var a=b.dataset.act,id=b.dataset.id;
+if(a==="tab"){tab=id}
+else if(a==="tog"){var h=S.hw.find(function(x){return x.id===id});h.done=b.checked;if(b.checked)gain(10,2);save()}
+else if(a==="delnote"){S.files.filter(function(f){return f.kind==="note"&&f.ref===id}).forEach(rmFile);S.files=S.files.filter(function(f){return!(f.kind==="note"&&f.ref===id)});S.notes=S.notes.filter(function(x){return x.id!==id});save()}
+else if(a==="delgrade"){S.grades=S.grades.filter(function(x){return x.id!==id});save()}
+else if(a==="fstart"){if(!frun){frun=setInterval(function(){fsec--;var el=document.getElementById("clk");if(el)el.textContent=ftxt();if(fsec<=0){clearInterval(frun);frun=null;fsec=fmax;S.sess=S.sess||{};var k=iso(new Date());S.sess[k]=(S.sess[k]||0)+1;gain(15,5);save();stat.textContent="🎉 Focus session done! Take a break.";if(tab==="focus")render()}},1000)}}
+else if(a==="fpause"||a==="freset"||a==="fset"){clearInterval(frun);frun=null;if(a==="fset")fmax=+id*60;if(a!=="fpause")fsec=fmax}
+else if(a==="logout"){logout();return}
+else if(a==="delacct"){if(confirm("Delete this account and all its data on this device?")){S.files.forEach(rmFile);var us=JSON.parse(localStorage.getItem("sp_users")||"{}");delete us[cur];localStorage.setItem("sp_users",JSON.stringify(us));localStorage.removeItem("sp_data_"+cur);logout();return}}
+else if(a==="starter"){STARTER.forEach(p=>S.cards.push({id:uid(),q:p[0],a:p[1],sub:""}));save()}
+else if(a==="delcard"){S.cards=S.cards.filter(x=>x.id!==id);save()}
+else if(a==="qs"){var sl=document.getElementById("qsub").value,pool=S.cards.filter(c=>!sl||c.sub===sl);if(S.cards.length<4||pool.length<1){stat.textContent="Add at least 4 flashcards first (and some in that subject)."}else gm={i:0,sc:0,p:null,q:sh(pool).slice(0,10).map(c=>({c:c,o:sh([c.a].concat(sh(S.cards.filter(x=>x.a!==c.a)).slice(0,3).map(x=>x.a)))}))}}
+else if(a==="qa"){gm.p=+id;var qq=gm.q[gm.i];if(qq.o[gm.p]===qq.c.a){gm.sc++;gain(10,3);save()}}
+else if(a==="qn"){gm.i++;gm.p=null;if(gm.i>=gm.q.length){S.g.played=(S.g.played||0)+1;S.g.correct=(S.g.correct||0)+gm.sc;if(gm.sc===gm.q.length){S.g.perfect=(S.g.perfect||0)+1;gain(20,10)}save()}}
+else if(a==="qx"){gm=null}
+else if(a==="loot"){if((S.g.coins||0)<50){lastLoot="";stat.textContent="Not enough coins yet. Play Quiz Arena to earn more!"}else{S.g.coins-=50;lastLoot=LOOT[Math.floor(Math.random()*LOOT.length)];S.loot.push(lastLoot);save()}}
+else if(a==="theme"){S.set.theme=id;save()}
+else if(a==="acc"){S.set.acc=id;save()}
+else if(a==="rad"){S.set.rad=+id;save()}
+else if(a==="fs"){S.set.fs=+id;save()}
+else if(a==="wtog"){S.set.w=S.set.w||{};S.set.w[id]=b.checked;save()}
+else if(a==="delsub"){S.subjects=S.subjects.filter(function(x){return x.id!==id});S.tests.concat(S.hw).forEach(function(x){if(x.sub===id)x.sub=""});save()}
+else if(a==="deltest"||a==="delhw"){var k=a==="deltest"?"test":"hw";S[a==="deltest"?"tests":"hw"]=S[a==="deltest"?"tests":"hw"].filter(function(x){return x.id!==id});S.files.filter(function(f){return f.kind===k&&f.ref===id}).forEach(rmFile);S.files=S.files.filter(function(f){return!(f.kind===k&&f.ref===id)});save()}
+else if(a==="delfile"){var f=S.files.find(function(x){return x.id===id});if(f)rmFile(f);S.files=S.files.filter(function(x){return x.id!==id});save()}
+render()});
+var fmax=1500,fsec=1500,frun=null;function ftxt(){var m=Math.floor(fsec/60),s=fsec%60;return(m<10?"0":"")+m+":"+(s<10?"0":"")+s}
+document.addEventListener("input",function(e){var ds=e.target.dataset||{};if(ds.quick!==undefined){S.quick=e.target.value;save();return}if(ds.set){S.set[ds.set]=e.target.value;save();return}var n=ds.note;if(!n)return;var x=S.notes.find(function(z){return z.id===n});if(x){x.text=e.target.value;save()}});
+var gm=null,lastLoot="",LOOT=["🐶","🐱","🦊","🐼","🦄","🐲","🚀","🌈","👑","💎","🎸","🏆","🦖","🐙","🌋","🪐"],STARTER=[["What is the thin, solid outer layer of Earth?","Crust"],["Molten rock beneath Earth’s surface?","Magma"],["Molten rock that reaches the surface?","Lava"],["Plates sliding past each other form which boundary?","Transform boundary"],["Where is new crust created as plates move apart?","Constructive boundary"],["One plate forced beneath another is called…","Subduction"],["The point inside Earth where an earthquake starts?","Focus"],["The point on the surface directly above the focus?","Epicentre"],["Which seismic wave arrives first?","P wave"],["Instrument that detects ground movement?","Seismometer"],["A supercontinent that existed long ago?","Pangaea"],["Force pulling a plate as its cold edge sinks?","Slab pull"]];
+function sh(a){return a.slice().sort(()=>Math.random()-.5)}
+function lv(){var x=(S.g&&S.g.xp)||0;return[Math.floor(x/100)+1,x%100]}
+function gain(x,c){var g=S.g=S.g||{},t=iso(new Date());g.xp=(g.xp||0)+x;g.coins=(g.coins||0)+c;if(g.last!==t){g.streak=g.last&&daysTo(g.last)===-1?(g.streak||0)+1:1;g.last=t}}
+function wOn(k){return !(S.set.w&&S.set.w[k]===false)}
+function applySet(){var r=document.documentElement,s=S.set||{};if(s.theme&&s.theme!=="auto")r.setAttribute("data-theme",s.theme);else r.removeAttribute("data-theme");r.style.setProperty("--r",(s.rad==null?14:s.rad)+"px");r.style.setProperty("--fs",(s.fs||16)+"px");if(s.acc){var c=parseInt(s.acc.slice(1),16),l=((c>>16)*299+(c>>8&255)*587+(c&255)*114)/1000;r.style.setProperty("--accent",s.acc);r.style.setProperty("--accent-t",l>150?"#111":"#fff")}else{r.style.removeProperty("--accent");r.style.removeProperty("--accent-t")}}
+function rmFile(f){try{assets&&assets.delete(f.aid).catch(function(){})}catch(e){}}
+document.addEventListener("submit",function(e){var f=e.target.dataset.form;if(!f)return;e.preventDefault();var d=new FormData(e.target),o={id:uid()};
+if(f==="subject")S.subjects.push({id:o.id,name:d.get("name"),color:d.get("color")});
+if(f==="test")S.tests.push({id:o.id,title:d.get("title"),sub:d.get("sub"),date:d.get("date"),notes:d.get("notes")});
+if(f==="hw")S.hw.push({id:o.id,title:d.get("title"),sub:d.get("sub"),date:d.get("date"),done:false});if(f==="card")S.cards.push({id:o.id,q:d.get("q"),a:d.get("a"),sub:d.get("sub")});if(f==="note")S.notes.push({id:o.id,title:d.get("title"),sub:d.get("sub"),text:""});if(f==="grade")S.grades.push({id:o.id,title:d.get("title"),sub:d.get("sub"),score:+d.get("score"),out:+d.get("out")});
+save();render()});
+document.addEventListener("change",function(e){var u=e.target.dataset&&e.target.dataset.up;if(!u||!assets)return;var p=u.split(":"),fl=Array.prototype.slice.call(e.target.files);
+stat.textContent="Uploading…";
+fl.reduce(function(pr,file){return pr.then(function(){return assets.upload(file).then(function(r){S.files.push({id:uid(),aid:r.id,name:file.name,kind:p[0],ref:p[1]})})})},Promise.resolve())
+.then(function(){save();render()}).catch(function(err){stat.textContent="⚠ Upload failed: "+((err&&err.message)||"file may be too big (20 MB max).");render()})});
+render();
+var cur=null,idb=null;
+function blank(){return{subjects:[],tests:[],hw:[],files:[],notes:[],grades:[],sess:{},set:{},quick:"",g:{},cards:[],loot:[]}}
+(function(){var r=indexedDB.open("sp_files",1);r.onupgradeneeded=()=>r.result.createObjectStore("f");r.onsuccess=()=>{idb=r.result}})();
+function tx(m){return idb.transaction("f",m).objectStore("f")}
+assets={upload:file=>new Promise((ok,no)=>{var id=uid(),q=tx("readwrite").put(file,id);q.onsuccess=()=>ok({id:id});q.onerror=()=>no(q.error)}),delete:id=>new Promise(ok=>{var q=tx("readwrite").delete(id);q.onsuccess=q.onerror=()=>ok()})};
+document.addEventListener("click",function(e){var a=e.target.closest("[data-blob]");if(!a)return;e.preventDefault();var w=window.open("about:blank","_blank"),q=tx("readonly").get(a.dataset.blob);q.onsuccess=()=>{if(q.result&&w)w.location=URL.createObjectURL(q.result)}});
+async function hp(p,sl){var k=await crypto.subtle.importKey("raw",new TextEncoder().encode(p),"PBKDF2",false,["deriveBits"]),b=await crypto.subtle.deriveBits({name:"PBKDF2",salt:new TextEncoder().encode(sl),iterations:100000,hash:"SHA-256"},k,256);return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("")}
+function showAuth(m){document.getElementById("auth").classList.remove("hide");document.getElementById("am").textContent=m||"";document.getElementById("ap").value="";stat.textContent="Please log in."}
+function logout(){cur=null;me=null;localStorage.removeItem("sp_cur");S=blank();render();showAuth()}
+function enter(u){cur=u;me={name:u};localStorage.setItem("sp_cur",u);try{S=Object.assign(blank(),JSON.parse(localStorage.getItem("sp_data_"+u)||"{}"))}catch(e){S=blank()}document.getElementById("auth").classList.add("hide");stat.textContent="✓ Signed in as "+u+". Data is saved on this device.";tab="home";render()}
+async function auth(reg){var u=document.getElementById("au").value.trim().toLowerCase(),p=document.getElementById("ap").value,m=document.getElementById("am"),us=JSON.parse(localStorage.getItem("sp_users")||"{}");
+if(!u||p.length<4){m.textContent="Enter a username and a password of 4+ characters.";return}
+if(reg){if(us[u]){m.textContent="That username is taken.";return}var sl=uid()+uid();us[u]={s:sl,h:await hp(p,sl)};localStorage.setItem("sp_users",JSON.stringify(us));enter(u)}
+else{if(!us[u]||us[u].h!==await hp(p,us[u].s)){m.textContent="Wrong username or password.";return}enter(u)}}
+document.getElementById("al").onclick=()=>auth(false);document.getElementById("ar").onclick=()=>auth(true);
+document.getElementById("ap").onkeydown=e=>{if(e.key==="Enter")auth(false)};
+var c0=localStorage.getItem("sp_cur");if(c0&&JSON.parse(localStorage.getItem("sp_users")||"{}")[c0])enter(c0);
+</script>
+</body>
+</html>
